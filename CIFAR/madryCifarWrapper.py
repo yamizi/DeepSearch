@@ -27,7 +27,7 @@ class CompatModel:
         model_file = tf.train.latest_checkpoint(folder)
         tf.compat.v1.disable_eager_execution()
         model=Model("eval")
-        saver = tf.train.Saver()
+        saver = tf.compat.v1.train.Saver()
         saver.restore(self.sess, model_file)
         self.model=model
         self.calls=0
@@ -36,4 +36,5 @@ class CompatModel:
         res=np.exp(self.sess.run(self.model.pre_softmax,feed_dict={self.model.x_input:images*255,self.model.y_input:[1]}))
         return res/np.sum(res,axis=1).reshape(-1,1)
 
-mymodel=CompatModel("model_defended/")
+if __name__ == '__main__':
+    mymodel=CompatModel("model_defended/")
