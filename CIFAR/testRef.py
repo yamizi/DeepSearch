@@ -14,28 +14,19 @@
 from LazierGreedy import *
 from pickle import dump,load
 from sys import argv
-from datetime import datetime
-from os import mkdir
-from os.path import exists
-from madryCifarWrapper import CompatModel
-
 import sys
-
-
-if len(sys.argv)>1 and sys.argv[1]=="undef":
-    mymodel=CompatModel("./DeepSearch/models/CIFAR/model_undefended/")
-    path = "./DeepSearch/PreEvaluatedData/UndefData/CIFAR_DS.pkl"
-    target_set=load(open(path,"rb"))
+if sys.argv[1]=="undef":
+    from madryCifarUndefWrapper import *
+    target_set=load(open("indices.pkl","rb"))
 else:
-    mymodel = CompatModel("./DeepSearch/models/CIFAR/model_defdefended/")
-    path = "./DeepSearch/PreEvaluatedData/DefData/CIFAR_DS.pkl"
-    target_set=load(open(path,"rb"))
-
-
+    from madryCifarWrapper import *
+    target_set=load(open("def_indices.pkl","rb"))
 #the following need to be set appropriately to point to the directory containing attacked images and the datafile
 dir="DSBatched/"
 dic=load(open("data.pkl","rb"))
-
+from datetime import datetime
+from os import mkdir
+from os.path import exists
 if not exists("DSRefine"):
     mkdir("DSRefine")
 path="DSRefine/"+str(datetime.now())+"/"
